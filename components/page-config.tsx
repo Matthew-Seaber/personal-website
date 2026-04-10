@@ -10,7 +10,7 @@ export default function PageConfig({
 }) {
   const pathname = usePathname();
 
-  const excludedPages = ["/", "/login"];
+  const excludedPages = ["/"];
   const isExcludedPage = excludedPages.includes(pathname);
 
   if (isExcludedPage) {
