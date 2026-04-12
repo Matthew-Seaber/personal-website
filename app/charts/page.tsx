@@ -27,7 +27,7 @@ function ChartsPage() {
     <div>
       <h1 className="text-4xl font-semibold font-jakarta">THE CHARTS</h1>
       <p className="mt-3 text-muted-foreground">
-        Click the songs below to open them on Spotify!
+        These are my current favourite songs. Click the songs below to open them on Spotify!
       </p>
 
       <ChartsTable data={data} />

@@ -16,7 +16,11 @@ function Navbar() {
           </Link>
         </div>
         <Button asChild size="lg">
-          <Link href="/contact" target="_blank" rel="noopener noreferrer">
+          <Link
+            href="https://www.instagram.com/_matthewseaber_"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Contact
           </Link>
         </Button>
