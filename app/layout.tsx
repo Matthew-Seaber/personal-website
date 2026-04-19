@@ -28,6 +28,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${plusJakartaSans.variable} h-full antialiased`}
     >
+      <head>
+        <meta name="apple-mobile-web-app-title" content="Matthew Seaber" />
+      </head>
       <body className="min-h-full flex flex-col font-geist-sans">
         <PageConfig>{children}</PageConfig>
       </body>
