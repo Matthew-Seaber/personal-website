@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Plus_Jakarta_Sans } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import PageConfig from "@/components/page-config";
 
@@ -30,6 +31,7 @@ export default function RootLayout({
     >
       <head>
         <meta name="apple-mobile-web-app-title" content="Matthew Seaber" />
+        <Analytics />
       </head>
       <body className="min-h-full flex flex-col font-geist-sans">
         <PageConfig>{children}</PageConfig>

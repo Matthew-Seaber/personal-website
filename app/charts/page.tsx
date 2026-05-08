@@ -31,6 +31,8 @@ function ChartsPage() {
       </p>
 
       <ChartsTable data={data} />
+
+      <p className="text-sm italic pt-6 text-muted-foreground">Table last updated: 08/05/2026</p>
     </div>
   );
 }

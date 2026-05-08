@@ -17,13 +17,28 @@ function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  function handleSubmit() {
+  async function handleSubmit() {
     if (!email || !password || email.trim() === "" || password.trim() === "") {
       alert("Missing credentials.");
       return;
     }
 
-    window.location.href = "/dashboard";
+    try {
+      const res = await fetch("api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        window.location.href = "/dashboard";
+      } else {
+        alert("Credentials incorrect.")
+      }
+    } catch (error) {
+      alert("Error authenticating user.");
+      console.log("Error message: " + error);
+    }
   }
 
   return (
