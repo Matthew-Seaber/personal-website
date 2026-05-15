@@ -1,0 +1,68 @@
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+
+function DashboardPage() {
+  const [status, setStatus] = useState("stopped");
+  const [time, setTime] = useState(0);
+
+  function formatTime(timeInSeconds: number) {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  }
+
+  function startTimer() {
+    setStatus("running");
+  }
+
+  function pauseTimer() {
+    setStatus("paused");
+  }
+
+  function stopTimer() {
+    setStatus("stopped");
+  }
+
+  return (
+    <div>
+      <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
+      <div className="justify-center text-center">
+        <p className="my-8 text-5xl tracking-wider font-semibold">
+          {formatTime(time)}
+        </p>
+        {status === "stopped" && (
+          <Button onClick={() => startTimer()}>Start session</Button>
+        )}
+
+        {status === "running" && (
+          <Button
+            variant="outline"
+            className="mr-4"
+            onClick={() => pauseTimer()}
+          >
+            Pause session
+          </Button>
+        )}
+
+        {status === "paused" && (
+          <Button
+            variant="outline"
+            className="mr-4"
+            onClick={() => startTimer()}
+          >
+            Resume session
+          </Button>
+        )}
+
+        {(status === "running" || status === "paused") && (
+          <Button onClick={() => stopTimer()}>End session</Button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default DashboardPage;

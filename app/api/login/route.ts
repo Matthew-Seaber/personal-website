@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
     await tablesDB.upsertRow(databaseID, sessionsTableID, user.$id, {
       token: token,
-      expiryDate: expiryDate.toISOString()
+      expiryDate: expiryDate.toISOString(),
     });
 
     res.cookies.set({
