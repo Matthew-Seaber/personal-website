@@ -14,16 +14,28 @@ function DashboardPage() {
     return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
-  function startTimer() {
+  async function startTimer() {
     setStatus("running");
   }
 
-  function pauseTimer() {
+  async function pauseTimer() {
     setStatus("paused");
   }
 
-  function stopTimer() {
-    setStatus("stopped");
+  async function stopTimer() {
+    try {
+      const res = await fetch("api/timer/end_timer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      if (res.ok) {
+        setStatus("stopped");
+      }
+    } catch (error) {
+      alert("Error ending the timer.");
+      console.log("Error message: " + error);
+    }
   }
 
   return (
