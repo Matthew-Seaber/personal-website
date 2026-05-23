@@ -15,11 +15,24 @@ function DashboardPage() {
   }
 
   async function startTimer() {
-    setStatus("running");
-  }
+    try {
+      const res = await fetch("api/timer/start_timer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionTag: "study" }),
+      });
 
-  async function pauseTimer() {
-    setStatus("paused");
+      if (res.ok) {
+        setStatus("running");
+        const startTime = await res.json();
+      } else {
+        alert("Error starting the timer.");
+        window.location.reload();
+      }
+    } catch (error) {
+      alert("Error starting the timer.");
+      console.log("Error message: " + error);
+    }
   }
 
   async function stopTimer() {
@@ -31,6 +44,9 @@ function DashboardPage() {
 
       if (res.ok) {
         setStatus("stopped");
+      } else {
+        alert("Error ending the timer.");
+        window.location.reload();
       }
     } catch (error) {
       alert("Error ending the timer.");
@@ -50,26 +66,6 @@ function DashboardPage() {
         )}
 
         {status === "running" && (
-          <Button
-            variant="outline"
-            className="mr-4"
-            onClick={() => pauseTimer()}
-          >
-            Pause session
-          </Button>
-        )}
-
-        {status === "paused" && (
-          <Button
-            variant="outline"
-            className="mr-4"
-            onClick={() => startTimer()}
-          >
-            Resume session
-          </Button>
-        )}
-
-        {(status === "running" || status === "paused") && (
           <Button onClick={() => stopTimer()}>End session</Button>
         )}
       </div>
