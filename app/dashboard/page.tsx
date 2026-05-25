@@ -1,6 +1,13 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useState } from "react";
 
@@ -9,6 +16,7 @@ function DashboardPage() {
   const [time, setTime] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [baseTime, setBaseTime] = useState(0);
+  const [sessionTag, setSessionTag] = useState<string | null>("study");
   const [loading, setLoading] = useState(true);
 
   function formatTime(timeInSeconds: number) {
@@ -65,7 +73,7 @@ function DashboardPage() {
       const res = await fetch("api/timer/start_timer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionTag: "study" }),
+        body: JSON.stringify({ sessionTag }),
       });
 
       if (res.ok) {
@@ -119,12 +127,30 @@ function DashboardPage() {
       <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
       <div className="justify-center text-center">
         {loading ? (
-          <Skeleton className="w-48 h-12 my-8 mx-auto" />
+          <Skeleton className="w-60 h-16 mt-8 mb-4 mx-auto" />
         ) : (
-          <p className="my-8 text-6xl h-12 tracking-wider font-semibold">
+          <p className="mt-8 mb-4 text-7xl h-16 tracking-wider font-semibold">
             {formatTime(time)}
           </p>
         )}
+
+        <div className="mb-6 flex justify-center">
+          <Select
+            onValueChange={(value) =>
+              setSessionTag(value === "none" ? null : value)
+            }
+          >
+            <SelectTrigger className="border-none capitalize">
+              <SelectValue placeholder={sessionTag || "No tag"} />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="none">No tag</SelectItem>
+              <SelectItem value="study">Study</SelectItem>
+              <SelectItem value="work">Work</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
         {status === "stopped" && (
           <Button onClick={() => startTimer()}>Start session</Button>
         )}
