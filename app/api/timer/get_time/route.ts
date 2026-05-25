@@ -3,12 +3,13 @@ import { tablesDB } from "@/lib/appwrite";
 
 import { NextResponse } from "next/server";
 
-const databaseID = process.env.APPWRITE_DATABASE_ID!;
-const timerSessionsTableID = process.env.APPWRITE_TIMER_SESSIONS_TABLE_ID!;
+const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+const timerSessionsTableID = process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
 
 export async function GET() {
   try {
     let timerStatus = "stopped";
+    let currentSessionTag = null;
     let startTime = null;
     let baseTime = 0;
 
@@ -22,6 +23,7 @@ export async function GET() {
 
     if (activeSession) {
       timerStatus = "running";
+      currentSessionTag = activeSession.tag;
       startTime = activeSession.start_time;
     } else {
       timerStatus = "stopped";
@@ -52,7 +54,12 @@ export async function GET() {
       baseTime = 0;
     }
 
-    return NextResponse.json({ timerStatus, startTime, baseTime });
+    return NextResponse.json({
+      timerStatus,
+      currentSessionTag,
+      startTime,
+      baseTime,
+    });
   } catch (error) {
     console.log("Error: " + error);
     return NextResponse.json(

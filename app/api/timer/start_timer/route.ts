@@ -5,8 +5,8 @@ import { NextResponse } from "next/server";
 
 import { checkAuth } from "@/lib/auth";
 
-const databaseID = process.env.APPWRITE_DATABASE_ID!;
-const timerSessionsTableID = process.env.APPWRITE_TIMER_SESSIONS_TABLE_ID!;
+const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
+const timerSessionsTableID = process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
 
 export async function POST(req: NextRequest) {
   const { sessionTag } = await req.json();

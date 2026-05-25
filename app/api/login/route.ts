@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import { NextResponse } from "next/server";
 
-const databaseID = process.env.APPWRITE_DATABASE_ID!;
+const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const usersTableID = process.env.APPWRITE_USERS_TABLE_ID!;
 const sessionsTableID = process.env.APPWRITE_SESSIONS_TABLE_ID!;
 

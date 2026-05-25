@@ -138,7 +138,7 @@ function DashboardPage() {
           <Select
             onValueChange={(value) =>
               setSessionTag(value === "none" ? null : value)
-            }
+            } disabled={status === "running"}
           >
             <SelectTrigger className="border-none capitalize">
               <SelectValue placeholder={sessionTag || "No tag"} />
