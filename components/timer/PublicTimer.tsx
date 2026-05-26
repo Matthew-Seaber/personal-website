@@ -18,10 +18,11 @@ function PublicTimer() {
     process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
 
   function formatTime(timeInSeconds: number) {
-    const minutes = Math.floor(timeInSeconds / 60);
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor(timeInSeconds / 60) % 60;
     const seconds = timeInSeconds % 60;
 
-    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
   async function getTimerData() {
@@ -77,9 +78,10 @@ function PublicTimer() {
 
   useEffect(() => {
     const unsubscribe = client.subscribe(
-      `databases.${databaseID}.tables.${timerSessionsTableID}.rows`,
-      () => {
-        getTimerData();
+      `databases.${databaseID}.collections.${timerSessionsTableID}.documents`,
+      async (response) => {
+        console.log(response);
+        await getTimerData();
       },
     );
 
@@ -98,7 +100,13 @@ function PublicTimer() {
         </p>
       )}
 
-      <div className="my-3 capitalize">{sessionTag && <p>{sessionTag}</p>}</div>
+      <div className="my-3">
+        {sessionTag ? (
+          <p className="capitalize">{sessionTag}ing</p>
+        ) : (
+          <p>Study time today</p>
+        )}
+      </div>
     </div>
   );
 }

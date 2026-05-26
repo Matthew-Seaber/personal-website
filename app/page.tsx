@@ -10,7 +10,7 @@ export default function Home() {
       <PublicTimer />
 
       <div>
-        <a href="/charts" className="mt-2 text-lg font-medium underline">
+        <a href="/charts" className="mt-2 text-lg font-medium underline hover:text-shadow-sm">
           check out my current favourite songs here
         </a>
       </div>

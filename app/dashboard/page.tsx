@@ -20,10 +20,11 @@ function DashboardPage() {
   const [loading, setLoading] = useState(true);
 
   function formatTime(timeInSeconds: number) {
-    const minutes = Math.floor(timeInSeconds / 60);
+    const hours = Math.floor(timeInSeconds / 3600);
+    const minutes = Math.floor(timeInSeconds / 60) % 60;
     const seconds = timeInSeconds % 60;
 
-    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
   async function getTimerData() {
@@ -138,7 +139,8 @@ function DashboardPage() {
           <Select
             onValueChange={(value) =>
               setSessionTag(value === "none" ? null : value)
-            } disabled={status === "running"}
+            }
+            disabled={status === "running"}
           >
             <SelectTrigger className="border-none capitalize">
               <SelectValue placeholder={sessionTag || "No tag"} />

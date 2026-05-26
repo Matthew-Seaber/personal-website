@@ -3,7 +3,7 @@ import { tablesDB } from "@/lib/appwrite";
 
 import { NextRequest } from "next/server";
 
-const databaseID = process.env.APPWRITE_DATABASE_ID!;
+const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
 const sessionsTableID = process.env.APPWRITE_SESSIONS_TABLE_ID!;
 
 export async function checkAuth(req: NextRequest) {
