@@ -15,17 +15,34 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
 import { ArrowRight, Check } from "lucide-react";
 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+interface QuickLink {
+  code: string;
+  destination: string;
+  $createdAt: string;
+}
+
 function DashboardPage() {
   const [status, setStatus] = useState("stopped");
   const [time, setTime] = useState(0);
   const [startTime, setStartTime] = useState<number | null>(null);
   const [baseTime, setBaseTime] = useState(0);
   const [sessionTag, setSessionTag] = useState<string | null>("study");
+  const [quickLinksData, setQuickLinksData] = useState<QuickLink[]>([]);
   const [newURL, setNewURL] = useState("");
   const [newURLCode, setNewURLCode] = useState("");
   const [showCheck, setShowCheck] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [quickLinkLoading, setQuickLinkLoading] = useState(false);
+  const [quickLinkLoading, setQuickLinkLoading] = useState(true);
+  const [quickLinkCreateLoading, setQuickLinkCreateLoading] = useState(false);
 
   function formatTime(timeInSeconds: number) {
     const hours = Math.floor(timeInSeconds / 3600);
@@ -123,8 +140,24 @@ function DashboardPage() {
     }
   }
 
+  async function fetchExistingLinks() {
+    try {
+      const res = await fetch("api/links/get_links");
+
+      if (res.ok) {
+        const quickLinksData = await res.json();
+        setQuickLinksData(quickLinksData.rows);
+        setQuickLinkLoading(false);
+      } else {
+        alert("Error fetching existing quick links.");
+      }
+    } catch (error) {
+      console.log("Error fetching existing quick links: " + error);
+    }
+  }
+
   async function handleShortenURL() {
-    setQuickLinkLoading(true);
+    setQuickLinkCreateLoading(true);
     let finalURL = newURL.trim();
 
     if (!newURL.startsWith("https://")) {
@@ -146,26 +179,27 @@ function DashboardPage() {
         setNewURLCode("");
 
         setShowCheck(true);
-        setQuickLinkLoading(false);
+        setQuickLinkCreateLoading(false);
         setTimeout(() => {
           setShowCheck(false);
         }, 2000);
       } else {
         alert("Error shortening your URL.");
 
-        setQuickLinkLoading(false);
+        setQuickLinkCreateLoading(false);
       }
     } catch (error) {
       console.log("URL shortening error: " + error);
       alert("Error shortening your URL.");
 
-      setQuickLinkLoading(false);
+      setQuickLinkCreateLoading(false);
     }
   }
 
   useEffect(() => {
     const pageLoad = async () => {
       await getTimerData();
+      await fetchExistingLinks();
     };
 
     pageLoad();
@@ -176,7 +210,7 @@ function DashboardPage() {
       <h1 className="text-3xl font-semibold">Admin Dashboard</h1>
       <div className="justify-center text-center">
         {loading ? (
-          <Skeleton className="w-60 h-16 mt-8 mb-4 mx-auto" />
+          <Skeleton className="w-85 h-16 mt-8 mb-4 mx-auto" />
         ) : (
           <p className="mt-8 mb-4 text-7xl h-16 tracking-wider font-semibold tabular-nums">
             {formatTime(time)}
@@ -210,7 +244,7 @@ function DashboardPage() {
         )}
       </div>
 
-      <h3 className="text-xl font-semibold mt-8 mb-4">Quick Links</h3>
+      <h3 className="text-xl font-semibold mt-8 mb-6">Quick Links</h3>
       <div className="gap-2 flex flex-col md:flex-row">
         <Input
           type="text"
@@ -228,15 +262,53 @@ function DashboardPage() {
         />
 
         <Button
-          disabled={!newURL.trim() || quickLinkLoading === true}
+          disabled={!newURL.trim() || quickLinkCreateLoading === true}
           onClick={handleShortenURL}
           className="w-16"
         >
-          {!quickLinkLoading && !showCheck && <ArrowRight />}
-          {quickLinkLoading && <Spinner />}
+          {!quickLinkCreateLoading && !showCheck && <ArrowRight />}
+          {quickLinkCreateLoading && <Spinner />}
           {showCheck && <Check />}
         </Button>
       </div>
+      {quickLinkLoading === false ? (
+        <>
+          <h4 className="text-lg font-normal mt-6">Existing Links</h4>
+
+          <div className="mt-2">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Code</TableHead>
+                  <TableHead>Destination</TableHead>
+                  <TableHead>Created</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {quickLinksData.map(
+                  (link: {
+                    code: string;
+                    destination: string;
+                    $createdAt: string;
+                  }) => (
+                    <TableRow key={link.code}>
+                      <TableCell>{link.code}</TableCell>
+                      <TableCell>
+                        {link.destination
+                          .replace(/https?:\/\//, "")
+                          .replace(/\/$/, "")}
+                      </TableCell>
+                      <TableCell title={link.$createdAt}>
+                        {new Date(link.$createdAt).toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ),
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
