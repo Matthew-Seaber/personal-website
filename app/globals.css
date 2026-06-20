@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (@media (prefers-color-scheme: dark));
 
 @theme inline {
   --color-background: var(--background);
@@ -83,6 +83,42 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: oklch(28.5% 0.0381 195deg);
+    --foreground: oklch(97.9% 0.0257 142deg);
+    --card: oklch(28.5% 0.0381 195deg);
+    --card-foreground: oklch(0.985 0 0);
+    --popover: oklch(28.5% 0.0381 195deg);
+    --popover-foreground: oklch(68.5% 0.0383 174deg);
+    --primary: oklch(94.5% 0.0327 142deg);
+    --primary-foreground: oklch(30.2% 0.0422 195deg);
+    --secondary: oklch(0.269 0 0);
+    --secondary-foreground: oklch(0.985 0 0);
+    --muted: oklch(30.2% 0.0422 195deg);
+    --muted-foreground: oklch(68.5% 0.0383 174deg);
+    --accent: oklch(33.459% 0.04661 195.203);
+    --accent-foreground: oklch(97.9% 0.0257 142deg);
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: oklch(1 0 0 / 10%);
+    --input: oklch(35.86% 0.04407 195.419);
+    --ring: oklch(0.556 0 0);
+    --chart-1: oklch(0.87 0 0);
+    --chart-2: oklch(0.556 0 0);
+    --chart-3: oklch(0.439 0 0);
+    --chart-4: oklch(0.371 0 0);
+    --chart-5: oklch(0.269 0 0);
+    --sidebar: oklch(0.205 0 0);
+    --sidebar-foreground: oklch(0.985 0 00);
+    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary-foreground: oklch(0.985 0 0);
+    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent-foreground: oklch(0.985 0 0);
+    --sidebar-border: oklch(1 0 0 / 10%);
+    --sidebar-ring: oklch(0.556 0 0);
+  }
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -121,9 +157,11 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }

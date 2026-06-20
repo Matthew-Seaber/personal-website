@@ -94,7 +94,7 @@ function PublicTimer() {
         <Skeleton className="w-60 h-16 mt-4 mx-auto" />
       ) : (
         <p
-          className={`mt-4 text-7xl h-16 tracking-wider font-semibold tabular-nums ${status === "running" ? "text-orange-400" : ""}`}
+          className={`mt-4 text-7xl h-16 tracking-wider font-semibold tabular-nums ${status === "running" ? "text-orange-400 dark:text-[#E67E4D]" : ""}`}
         >
           {formatTime(time)}
         </p>

@@ -28,7 +28,7 @@ function ChartsTable({ data }: { data: Song[] }) {
     <div className="mt-8 p-2 rounded-2xl border">
       <Table>
         <TableHeader>
-          <TableRow className="border-b border-neutral-200 hover:bg-transparent">
+          <TableRow className="border-b border-neutral-200 dark:border-[#1f4848] hover:bg-transparent">
             <TableHead>#</TableHead>
             <TableHead>Title</TableHead>
             <TableHead>Artist</TableHead>
@@ -43,7 +43,7 @@ function ChartsTable({ data }: { data: Song[] }) {
           {data.map((song: Song, id) => (
             <TableRow
               key={song.id}
-              className="border-b border-neutral-100 hover:bg-muted/50 transition cursor-pointer"
+              className="border-b border-neutral-100 dark:border-[#103939] hover:bg-muted/50 transition cursor-pointer"
               onClick={() =>
                 window.open(
                   `https://open.spotify.com/track/${song.spotify_link_id}`,

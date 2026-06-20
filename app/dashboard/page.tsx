@@ -130,7 +130,7 @@ function DashboardPage() {
         {loading ? (
           <Skeleton className="w-60 h-16 mt-8 mb-4 mx-auto" />
         ) : (
-          <p className="mt-8 mb-4 text-7xl h-16 tracking-wider font-semibold">
+          <p className="mt-8 mb-4 text-7xl h-16 tracking-wider font-semibold tabular-nums">
             {formatTime(time)}
           </p>
         )}
