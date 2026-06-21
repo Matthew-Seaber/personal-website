@@ -21,5 +21,9 @@ Feel free to create a pull request if you'd like to contribute or have any sugge
 - Public study/work time tracker controlled by a private dashboard
 - URL shortener to shorten long links before sharing
 
+![Video demo](/public/site-demo.gif)
+
+*Note: AI was only used sparingly in this project to help debug minor issues.*
+
 ## Live Demo
 👉 [My Personal Website](https://matthewseaber.com/) (hosted on Vercel using Next.js)
