@@ -202,6 +202,19 @@ function DashboardPage() {
 
   async function handleDeleteLink(code: string) {
     try {
+      const res = await fetch("api/links/delete_link", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      });
+
+      if (res.ok) {
+        setQuickLinksData((prevData) =>
+          prevData.filter((link) => link.code !== code),
+        );
+      } else {
+        alert("Error deleting quick link.");
+      }
     } catch (error) {
       console.log("Error deleting quick link: " + error);
       alert("Error deleting quick link.");
