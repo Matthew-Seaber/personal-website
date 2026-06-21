@@ -35,9 +35,14 @@ export async function POST(req: Request) {
     const cookieAge = 1000 * 60 * 60 * 24 * 14; // 14 days
     const expiryDate = new Date(Date.now() + cookieAge);
 
-    await tablesDB.upsertRow(databaseID, sessionsTableID, user.$id, {
-      token: token,
-      expiryDate: expiryDate.toISOString(),
+    await tablesDB.upsertRow({
+      databaseId: databaseID,
+      tableId: sessionsTableID,
+      rowId: user.$id,
+      data: {
+        token: token,
+        expiryDate: expiryDate.toISOString(),
+      },
     });
 
     res.cookies.set({

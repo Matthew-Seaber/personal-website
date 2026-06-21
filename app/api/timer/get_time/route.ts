@@ -4,7 +4,8 @@ import { tablesDB } from "@/lib/appwrite";
 import { NextResponse } from "next/server";
 
 const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const timerSessionsTableID = process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
+const timerSessionsTableID =
+  process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
 
 export async function GET() {
   try {
@@ -13,11 +14,11 @@ export async function GET() {
     let startTime = null;
     let baseTime = 0;
 
-    const activeSessions = await tablesDB.listRows(
-      databaseID,
-      timerSessionsTableID,
-      [Query.equal("active", true)],
-    );
+    const activeSessions = await tablesDB.listRows({
+      databaseId: databaseID,
+      tableId: timerSessionsTableID,
+      queries: [Query.equal("active", true)],
+    });
 
     const activeSession = activeSessions.rows[0];
 
@@ -30,17 +31,17 @@ export async function GET() {
       startTime = null;
     }
 
-    const previousSessions = await tablesDB.listRows(
-      databaseID,
-      timerSessionsTableID,
-      [
+    const previousSessions = await tablesDB.listRows({
+      databaseId: databaseID,
+      tableId: timerSessionsTableID,
+      queries: [
         Query.equal("active", false),
         Query.greaterThanEqual(
           "start_time",
           new Date(new Date().setHours(0, 0, 0, 0)).toISOString(),
         ),
       ],
-    );
+    });
 
     if (previousSessions.total > 0) {
       for (const session of previousSessions.rows) {

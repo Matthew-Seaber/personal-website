@@ -14,9 +14,11 @@ export async function checkAuth(req: NextRequest) {
   }
 
   try {
-    const response = await tablesDB.listRows(databaseID, sessionsTableID, [
-      Query.equal("token", sessionCookie.value),
-    ]);
+    const response = await tablesDB.listRows({
+      databaseId: databaseID,
+      tableId: sessionsTableID,
+      queries: [Query.equal("token", sessionCookie.value)],
+    });
 
     if (response.total === 0) {
       return false;

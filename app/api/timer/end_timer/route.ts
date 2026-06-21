@@ -7,31 +7,32 @@ import { NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
 
 const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const timerSessionsTableID = process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
+const timerSessionsTableID =
+  process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
 
 export async function POST(req: NextRequest) {
   try {
     const userAuthorised = await checkAuth(req);
 
     if (userAuthorised) {
-      const sessions = await tablesDB.listRows(
-        databaseID,
-        timerSessionsTableID,
-        [Query.equal("active", true)],
-      );
+      const sessions = await tablesDB.listRows({
+        databaseId: databaseID,
+        tableId: timerSessionsTableID,
+        queries: [Query.equal("active", true)],
+      });
 
       const session = sessions.rows[0];
 
       if (session) {
-        await tablesDB.updateRow(
-          databaseID,
-          timerSessionsTableID,
-          session.$id,
-          {
+        await tablesDB.updateRow({
+          databaseId: databaseID,
+          tableId: timerSessionsTableID,
+          rowId: session.$id,
+          data: {
             end_time: new Date(),
             active: false,
           },
-        );
+        });
 
         return NextResponse.json(
           { message: "Successfully ended session" },

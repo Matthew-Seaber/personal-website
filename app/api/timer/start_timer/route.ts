@@ -6,7 +6,8 @@ import { NextResponse } from "next/server";
 import { checkAuth } from "@/lib/auth";
 
 const databaseID = process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID!;
-const timerSessionsTableID = process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
+const timerSessionsTableID =
+  process.env.NEXT_PUBLIC_APPWRITE_TIMER_SESSIONS_TABLE_ID!;
 
 export async function POST(req: NextRequest) {
   const { sessionTag } = await req.json();
@@ -17,11 +18,16 @@ export async function POST(req: NextRequest) {
     if (userAuthorised) {
       const startTime = new Date();
 
-      await tablesDB.createRow(databaseID, timerSessionsTableID, ID.unique(), {
-        start_time: startTime,
-        end_time: null,
-        active: true,
-        tag: sessionTag,
+      await tablesDB.createRow({
+        databaseId: databaseID,
+        tableId: timerSessionsTableID,
+        rowId: ID.unique(),
+        data: {
+          start_time: startTime,
+          end_time: null,
+          active: true,
+          tag: sessionTag,
+        },
       });
 
       return NextResponse.json({ startTime });

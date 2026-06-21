@@ -14,9 +14,11 @@ export async function GET(req: NextRequest) {
     const userAuthorised = await checkAuth(req);
 
     if (userAuthorised) {
-      const links = await tablesDB.listRows(databaseID, linksTableID, [
-        Query.orderDesc("$createdAt"),
-      ]);
+      const links = await tablesDB.listRows({
+        databaseId: databaseID,
+        tableId: linksTableID,
+        queries: [Query.orderDesc("$createdAt")],
+      });
 
       return NextResponse.json(links);
     } else {

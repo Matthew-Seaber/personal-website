@@ -28,12 +28,23 @@ export async function POST(req: NextRequest) {
         finalCode = code;
       }
 
-      await tablesDB.createRow(databaseID, linksTableID, ID.unique(), {
-        code: finalCode,
-        destination: url,
+      const newRow = await tablesDB.createRow({
+        databaseId: databaseID,
+        tableId: linksTableID,
+        rowId: ID.unique(),
+        data: {
+          code: finalCode,
+          destination: url,
+        },
       });
 
-      return NextResponse.json({ message: "Quick link created successfully" });
+      const dataToReturn = {
+        code: newRow.code,
+        destination: newRow.destination,
+        $createdAt: newRow.$createdAt,
+      };
+
+      return NextResponse.json(dataToReturn, { status: 200 });
     } else {
       return NextResponse.json(
         { error: "User unauthorised to make this request" },

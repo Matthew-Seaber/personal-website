@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Spinner } from "@/components/ui/spinner";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, Check, Link, Trash } from "lucide-react";
 
 import {
   Table,
@@ -178,6 +178,10 @@ function DashboardPage() {
         setNewURL("");
         setNewURLCode("");
 
+        const newLink = await res.json();
+
+        setQuickLinksData((prevData) => [newLink, ...prevData]);
+
         setShowCheck(true);
         setQuickLinkCreateLoading(false);
         setTimeout(() => {
@@ -193,6 +197,23 @@ function DashboardPage() {
       alert("Error shortening your URL.");
 
       setQuickLinkCreateLoading(false);
+    }
+  }
+
+  async function handleDeleteLink(code: string) {
+    try {
+    } catch (error) {
+      console.log("Error deleting quick link: " + error);
+      alert("Error deleting quick link.");
+    }
+  }
+
+  async function copyToClipboard(text: string) {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      console.error("Failed to copy text: ", error);
+      alert("Failed to copy link to clipboard.");
     }
   }
 
@@ -282,6 +303,8 @@ function DashboardPage() {
                   <TableHead>Code</TableHead>
                   <TableHead>Destination</TableHead>
                   <TableHead>Created</TableHead>
+                  <TableHead />
+                  <TableHead />
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -300,6 +323,30 @@ function DashboardPage() {
                       </TableCell>
                       <TableCell title={link.$createdAt}>
                         {new Date(link.$createdAt).toLocaleString()}
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          className="cursor-pointer"
+                          onClick={() =>
+                            copyToClipboard(
+                              `https://matthewseaber.com/ql/${link.code}`,
+                            )
+                          }
+                        >
+                          <Link className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                      <TableCell>
+                        <Button
+                          variant="ghost"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            handleDeleteLink(link.code);
+                          }}
+                        >
+                          <Trash className="h-4 w-4 text-red-400" />
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ),
