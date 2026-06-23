@@ -8,7 +8,7 @@ This is the repo for my personal website containing a charts page (listing my fa
 </picture>
 
 ## How to Access
-Use the live demo at the bottom of the README
+Use the live demo at the bottom of the README (to test the admin dashboard, go to /login and use the email `"test@example.com"` and password `"hctester"`)
 ### OR
 - Download the project files as a `.ZIP` or clone the repo using `git clone https://github.com/Matthew-Seaber/personal-website.git` in your terminal
 - Run `npm install` to install the required dependencies
